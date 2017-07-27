@@ -49,7 +49,7 @@ class RecurrentLayer(lasagne.layers.RecurrentLayer):
 			print 'num_inputs: ',num_inputs
 			self.W_LR_scale = np.float32(1./np.sqrt(1.5/ (num_inputs + num_units)))
 
-		if mode=='bianry' or mode=='ternary' or mode=='dual-copy' or mode=='quantize' :
+		if mode=='binary' or mode=='ternary' or mode=='dual-copy' or mode=='quantize' :
 			super(RecurrentLayer, self).__init__(incoming, num_units, **kwargs)
 			# add the bianry tag to weights
 			if self.round_input_weights:
