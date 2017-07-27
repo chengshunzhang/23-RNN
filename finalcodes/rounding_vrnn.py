@@ -41,7 +41,7 @@ class RecurrentLayer(lasagne.layers.RecurrentLayer):
 
 		print "Round HID: "+str(self.round_hid)
 
-		if not(mode=='bianry' or mode=='ternary' or mode=='dual-copy' or mode=='normal' or mode == 'quantize'):
+		if not(mode=='binary' or mode=='ternary' or mode=='dual-copy' or mode=='normal' or mode == 'quantize'):
 			raise AssertionError("Unexpected value of 'mode' ! ", mode)
 
 		if W_LR_scale == "Glorot":
