@@ -1,7 +1,7 @@
 import cPickle as pickle
 from lasagne.init import Normal
 from lasagne.layers import InputLayer
-import rounding_models
+
 from lasagne.layers import DenseLayer
 from lasagne.layers import get_all_layers
 from lasagne.layers import get_all_params
@@ -26,12 +26,13 @@ model = 'LSTM' # 'Vanilla RNN', 'GRU'
 
 def build_model(input_shape, num_hidden, num_output, grad_clipping):
     if model == 'LSTM' :
+        import rounding_LSTM
         l_in = InputLayer(input_shape, name='l_in')
-        l_lstm1 = rounding_models.LSTMLayer(
+        l_lstm1 = rounding_LSTM.LSTMLayer(
             l_in, name='l_lstm1',
             num_units=num_hidden, grad_clipping=grad_clipping, peepholes=False,
         )
-        l_lstm2 = rounding_models.LSTMLayer(
+        l_lstm2 = rounding_LSTM.LSTMLayer(
             l_lstm1, name='l_lstm2',
             num_units=num_hidden, grad_clipping=grad_clipping, peepholes=False,
             only_return_final=True,
@@ -45,13 +46,13 @@ def build_model(input_shape, num_hidden, num_output, grad_clipping):
         layers = get_all_layers(l_out)
     
     elif model == 'GRU':
-
+        import rounding_GRU
         g_in = InputLayer(input_shape, name='g_in')
-        g_gru1 = rounding_models.GRULayer(
+        g_gru1 = rounding_GRU.GRULayer(
             g_in, name='g_gru1',
             num_units=num_hidden, grad_clipping=grad_clipping,
         )
-        g_gru2 = rounding_models.GRULayer(
+        g_gru2 = rounding_GRU.GRULayer(
             g_gru1, name='g_gru2',
             num_units=num_hidden, grad_clipping=grad_clipping,
             only_return_final=True,
@@ -65,12 +66,13 @@ def build_model(input_shape, num_hidden, num_output, grad_clipping):
         layers = get_all_layers(g_out)
 
     elif model == 'Vanilla RNN':
+        import rounding_vrnn
         v_in = InputLayer(input_shape, name='v_in')
-        v_vrnn1 = rounding_models.RecurrentLayer(
+        v_vrnn1 = rounding_vrnn.RecurrentLayer(
             v_in, name='v_vrnn1',
             num_units=num_hidden, grad_clipping=grad_clipping,
         )
-        v_vrnn2 = rounding_models.RecurrentLayer(
+        v_vrnn2 = rounding_vrnn.RecurrentLayer(
             v_vrnn1, name='v_vrnn2',
             num_units=num_hidden, grad_clipping=grad_clipping,
             only_return_final=True,
@@ -82,7 +84,7 @@ def build_model(input_shape, num_hidden, num_output, grad_clipping):
         )
 
         layers = get_all_layers(g_out)
-        
+
     return {layer.name: layer for layer in layers}
 
 
